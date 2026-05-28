@@ -1,15 +1,11 @@
 # script to perform standard workflow steps to analyze single cell RNA-Seq data
 # data: 20k Mixture of NSCLC DTCs from 7 donors, 3' v3.1
-# data source: https://www.10xgenomics.com/resources/datasets/10-k-human-pbm-cs-multiome-v-1-0-chromium-controller-1-standard-2-0-0         
-
-# setwd("~/Desktop/demo/single_cell_RNASeq/scripts")
-
 # load libraries
 library(Seurat)
 library(tidyverse)
 
 # Load the NSCLC dataset
-nsclc.sparse.m <- Read10X_h5(filename = '../data/20k_NSCLC_DTC_3p_nextgem_Multiplex_count_raw_feature_bc_matrix.h5')
+nsclc.sparse.m <- Read10X_h5(filename = 'input-matrix.h5')
 str(nsclc.sparse.m)
 cts <-  nsclc.sparse.m$`Gene Expression`
 
@@ -88,10 +84,7 @@ Idents(nsclc.seurat.obj) <- "RNA_snn_res.0.1"
 Idents(nsclc.seurat.obj)
 
 # non-linear dimensionality reduction --------------
-# If you haven't installed UMAP, you can do so via reticulate::py_install(packages =
-# 'umap-learn')
 nsclc.seurat.obj <- RunUMAP(nsclc.seurat.obj, dims = 1:15)
-# note that you can set `label = TRUE` or use the LabelClusters function to help label
 # individual clusters
 DimPlot(nsclc.seurat.obj, reduction = "umap")
 
